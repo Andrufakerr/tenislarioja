@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="icon" type="image/x-icon" href="imagenes/icono.ico">
+  <meta charset="UTF-8">
+  <title>Turnos Veterinaria</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel ="stylesheet" href="estilos_inscriptos.css">
+</head>
+<body>
+  <div id="header">
+    <img src="imagenes/logo.png" alt="Logo Veterinaria">
+  </div>
+
+  <div class="contenedor-tabla">
+    <table class="tabla-turnos">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Telefono</th>
+        </tr>
+      </thead>
+      <tbody id="lista"></tbody>
+      <div id="tablasPorCategoria"></div>
+    </table>
+  </div>
+
+
+<script type="module" src="scriptsjs/firebase.js"></script> 
+<script type="module" src="scriptsjs/listar.js"></script>
+
+
+  
+</body>
+</html>
