@@ -1,0 +1,357 @@
+
+/* === RESETEO GENERAL === */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #0fb400, #009ed7, #005eff);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+/* === CONTENEDOR PRINCIPAL === */
+.info-vet {
+  background: white;
+  width: 100%;
+  max-width: 600px;
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  animation: fadeIn 0.6s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.info-vet img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.info-vet h1 {
+  color: #0044fffd;
+  font-size: clamp(1.6rem, 5vw, 2.3rem);
+  line-height: 1.2;
+}
+
+.info-vet p {
+  font-size: clamp(1rem, 4vw, 1.3rem);
+  margin-bottom: 6px;
+}
+
+/* === BOTÓN DE TURNOS FIJO === */
+.btn-turno {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #05ff2f, #2ceaff);
+  color: white;
+  padding: 14px 28px; /* 🔹 más chico en PC */
+  font-size: 1.1rem;
+  border-radius: 40px;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  z-index: 2000;
+}
+
+
+/* === WHATSAPP === */
+.whatsapp-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 12px 0;
+  flex-wrap: wrap;
+}
+
+.whatsapp-line img {
+  width: 28px;
+  height: 28px;
+}
+
+.whatsapp-line strong {
+  font-size: clamp(1.1rem, 4vw, 1.3rem);
+  color: #333;
+}
+
+.whatsapp-number a {
+  color: #128C7E;
+  font-weight: bold;
+  font-size: clamp(1.2rem, 4.5vw, 1.4rem);
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.whatsapp-number a:hover {
+  transform: scale(1.05);
+}
+
+/* === MAPA === */
+iframe {
+  width: 100%;
+  height: 250px;
+  border: none;
+  border-radius: 12px;
+  margin-top: 10px;
+}
+
+/* === MODAL === */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.55);
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.editorcaja {
+  background: white;
+  width: 95%;
+  max-width: 750px;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.3);
+  overflow-y: auto;
+  max-height: 90vh;
+  animation: slideUp 0.4s ease;
+}
+
+.editorcaja h3 {
+  color: #0015ffbb;
+  font-size: clamp(1.4rem, 5vw, 1.8rem);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: clamp(1rem, 4vw, 1.2rem);
+}
+
+form input,
+form select,
+form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: clamp(1rem, 4vw, 1.2rem);
+}
+
+form textarea {
+  resize: none;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #07df00;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: clamp(1rem, 4vw, 1.2rem);
+}
+
+.btn {
+  background: #0015ffbb;
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: clamp(1rem, 4vw, 1.2rem);
+}
+
+.actions-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+/* === ANIMACIONES === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.alerta-ventana {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
+  animation: fadeIn 0.3s ease;
+}
+
+.alerta-ventana.active {
+  display: flex;
+}
+
+.alerta-caja {
+  background: white;
+  padding: 30px 25px;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  animation: slideUp 0.3s ease;
+}
+
+.alerta-caja h3 {
+  color: #33ff00;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.alerta-caja button {
+  background: linear-gradient(135deg, #1aff01, #0331ff);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.alerta-caja button:hover {
+  transform: scale(1.05);
+}
+/* === MÓVILES GRANDES Y PEQUEÑOS === */
+/* === MÓVILES GRANDES Y PEQUEÑOS === */
+@media (max-width: 1000px) {
+  html { font-size: 22px; } /* 🔹 texto base más grande */
+  body { padding: 8px; }
+
+  .info-vet {
+    padding: 40px 22px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .info-vet h1 {
+    font-size: 2.5rem;
+  }
+
+  .info-vet p {
+    font-size: 1.6rem;
+  }
+
+  .whatsapp-line strong,
+  .whatsapp-number a {
+    font-size: 1.7rem;
+  }
+
+  iframe {
+    height: 340px;
+  }
+
+  /* 🔹 Botón GIGANTE en celular */
+  .btn-turno {
+    padding: 34px 70px;
+    font-size: 2.4rem;
+    border-radius: 28px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  }
+
+  /* 🔹 Modal del mismo tamaño que .info-vet */
+  .editorcaja {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 95vh;
+    padding: 40px 25px;
+    border-radius: 24px;
+    font-size: 1.4rem;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  }
+
+  .editorcaja h3 {
+    font-size: 2.2rem;
+    margin-bottom: 25px;
+  }
+
+  form label,
+  form input,
+  form select,
+  form textarea,
+  .btn-primary,
+  .btn {
+    font-size: 1.5rem;
+  }
+
+  .actions-row {
+    gap: 16px;
+  }
+}
+  .info-vet img[src*="logo.png"] {
+    transform: scale(1.2);
+    transform-origin: center;
+  }
+
+  a[href*="maps.app.goo.gl"] img {
+    transform: scale(1.15);
+    transform-origin: center;
+  }
+@media (max-width: 1000px) {
+  .alerta-caja {
+    width: 95%;
+    max-width: 95%;
+    padding: 50px 30px;
+    border-radius: 28px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.5);
+  }
+
+  .alerta-caja h3 {
+    font-size: 2.4rem; /* 🔹 texto grande como alert nativo */
+    line-height: 1.5;
+    margin-bottom: 35px;
+  }
+
+  .alerta-caja button {
+    font-size: 2rem;
+    padding: 20px 60px;
+    border-radius: 20px;
+  }
+}
+

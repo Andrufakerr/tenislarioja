@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="icon" type="image/x-icon" href="imagenes/icono.ico">
+  <meta charset="UTF-8">
+  <title>Tenis</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+   
+  <section class="info-vet">
+   <img src="imagenes/logo.png"> 
+   <br><br>
+
+
+    <h1>Inscripcion al torneo de Tenis </h1>
+    <h1>Profe. Jose herrera</h1>
+    <p><strong>Horario:</strong> Sabado 22 de Noviembre</p>
+    <p><strong>Horas:</strong> De 15:00 a 22:00</p>
+<div class="whatsapp-section">
+  <div class="whatsapp-line">
+    <img src="imagenes/wsp.png" alt="WhatsApp">
+    <strong>Número de WhatsApp</strong>
+  
+  <div class="whatsapp-number">
+    <a href="https://wa.me/543804123456789" target="_blank">380123456789</a>
+ 
+</div>
+</div>
+<h2 style="margin-top:25px;">📍 Apreté el mapa para ver ubicación</h2>
+<br><br>
+<a href="https://maps.app.goo.gl/dnMsS2wLVuYuow4v9?g_st=aw" target="_blank" style="display:inline-block; text-align:center;">
+  <img 
+    src="imagenes/ubicacion.png" 
+    alt="Ubicación en Google Maps" 
+    style="width:100%; max-width:300px; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.2); cursor:pointer;">
+</a>
+
+    <a href="#" id="btnNuevoTurno" class="btn-turno">Inscribirse 🎾</a>
+
+  </section>
+
+  <!-- 🔵 MODAL NUEVO PARTICIPANTE -->
+  <div id="modalTurno" class="modal">
+    <div class="editorcaja">
+      <h3>Nuevo Participante</h3>
+      <form id="formTurno" class="scroll-form">
+        <label>Nombre:</label>
+        <input type="text" id="nombre" required>
+
+        <label>Apellido:</label>
+        <input type="text" id="apellido" required>
+        
+        <label>Categoria:</label>
+<select id="especie" required>
+  <option value="">Seleccionar...</option>
+  <option value="1ra">1ra Categoria</option>
+  <option value="2nda">2nda Categoria</option>
+  <option value="3ra">3ra Categoria</option>
+  <option value="4ta">4ta Categoria</option>
+  <option value="femenino">Femenino</option>
+</select>
+
+
+        <label>Dni:</label>
+        <input type="text" id="dni" required>
+
+        <label>Telefono:</label>
+        <input type="text" id="telefono" required>
+      
+
+
+        <div class="actions-row" style="margin-top:10px;">
+  <button type="submit" class="btn-primary">Guardar</button>
+  <button type="button" id="btnCancelar" class="btn">Cancelar</button>
+</div>
+
+      </form>
+      </div></div>
+  <script type="module" src="scriptsjs/firebase.js"></script>
+  <script type="module" src="scriptsjs/modal.js"></script>
+
+<div id="modalConfirmacion" class="modal">
+  <div class="editorcaja" style="text-align:center;">
+    <h3 style="color:#00b612;">✅ Se inscribio correctamente al torneo de Tenis</h3>
+    <div style="margin-top:20px;">
+      <button id="btnOtroTurno" class="btn-primary">Inscribir Otro participante</button>
+      <button id="btnImprimir" class="btn">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
