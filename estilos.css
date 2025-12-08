@@ -1,4 +1,7 @@
 /* === RESETEO GENERAL === */
+.modal.active {
+  display: flex !important;
+}
 * {
   box-sizing: border-box;
   margin: 0;
@@ -161,6 +164,19 @@ body.page-table {
   display: none;
   justify-content: center;
   align-items: center;
+  padding: 20px; /* para que no se pegue a los bordes en celu */
+}
+
+/* Contenido del modal */
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;            /* móvil */
+  max-width: 700px;      /* PC más grande */
+  max-height: 90vh;      /* evitar que se salga en celulares */
+  overflow-y: auto;      /* scroll interno si es muy grande */
+  font-size: 1.2rem;     /* texto más grande */
 }
 
 .editorcaja {
@@ -326,27 +342,181 @@ body.page-table {
   letter-spacing: 0.6px;
   z-index: 1000;
 }
-
-/* === RESPONSIVE === */
+/* === SUPER ZOOM A INFO-VET EN CELULAR === */
 @media (max-width: 1000px) {
-  html { font-size: 20px; }
+  html { font-size: 22px; } /* 🔹 texto base más grande */
+  body { padding: 8px; }
 
-  .contenedor-tabla {
+  .info-vet {
+    padding: 40px 22px;
     width: 100%;
     max-width: 100%;
+  }
+
+  .info-vet h1 {
+    font-size: 2.5rem;
+  }
+
+  .info-vet p {
+    font-size: 1.6rem;
+  }
+
+  .whatsapp-line strong,
+  .whatsapp-number a {
+    font-size: 1.7rem;
+  }
+
+  iframe {
+    height: 340px;
+  }
+
+  /* 🔹 Botón GIGANTE en celular */
+  .btn-turno {
+    padding: 34px 70px;
+    font-size: 2.4rem;
+    border-radius: 28px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  }
+
+  /* 🔹 Modal del mismo tamaño que .info-vet */
+  .editorcaja {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 95vh;
+    padding: 40px 25px;
     border-radius: 24px;
-    padding: 35px 20px;
-  }
-
-  .tabla-turnos th,
-  .tabla-turnos td {
     font-size: 1.4rem;
-    padding: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  }
+
+  .editorcaja h3 {
+    font-size: 2.2rem;
+    margin-bottom: 25px;
+  }
+
+  form label,
+  form input,
+  form select,
+  form textarea,
+  .btn-primary,
+  .btn {
+    font-size: 1.5rem;
+  }
+
+  .actions-row {
+    gap: 16px;
+  }
+}
+  .info-vet img[src*="logo.png"] {
+    transform: scale(1.2);
+    transform-origin: center;
+  }
+
+  a[href*="maps.app.goo.gl"] img {
+    transform: scale(1.15);
+    transform-origin: center;
+  }
+@media (max-width: 1000px) {
+  .alerta-caja {
+    width: 95%;
+    max-width: 95%;
+    padding: 50px 30px;
+    border-radius: 28px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.5);
+  }
+
+  .alerta-caja h3 {
+    font-size: 2.4rem; /* 🔹 texto grande como alert nativo */
+    line-height: 1.5;
+    margin-bottom: 35px;
+  }
+
+  .alerta-caja button {
+    font-size: 2rem;
+    padding: 20px 60px;
+    border-radius: 20px;
+  }
+  .menu {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.40);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  backdrop-filter: blur(4px);
+  
+}
+
+  .modal-content {
+    width: 95%;
+    max-width: 95%;
+    font-size: 1.3rem;
+    padding: 25px;
+  }
+  .editorcaja {
+    width: 98%;
+    padding: 30px;
+    font-size: 1.3rem;
+  }
+
+  input, select {
+    padding: 14px;
+    font-size: 1.2rem;
+  }
+
+  h3 {
+    font-size: 1.6rem;
+  }
+
+  .actions-row button {
+    font-size: 1.2rem;
+    padding: 12px 18px;
+  }
+}
+/* === MODAL GIGANTE EN CELULAR === */
+@media (max-width: 900px) {
+
+  /* Fondo del modal */
+  .modal {
+    padding: 0;
+    align-items: flex-start;
+  }
+
+  /* Caja del modal (ESTA es la que vos usás) */
+  .editorcaja {
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;             /* 🔥 OCUPA TODA LA PANTALLA */
+    border-radius: 0;          /* 🔥 Como una app completa */
+    padding: 40px 25px;
+    font-size: 1.6rem;         /* 🔥 TEXTO MUCHO MÁS GRANDE */
+    overflow-y: auto;
+  }
+
+  .editorcaja h3 {
+    font-size: 2.4rem;
+    margin-bottom: 30px;
+  }
+
+  .editorcaja label {
+    font-size: 1.8rem;
+  }
+
+  .editorcaja input,
+  .editorcaja select {
+    font-size: 1.6rem;
+    padding: 18px;
+  }
+
+  .actions-row button {
+    font-size: 1.7rem;
+    padding: 18px 26px;
   }
 }
 
-/* === ANIMACIÓN === */
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.96); }
-  to   { opacity: 1; transform: scale(1); }
-}
+  
+
+
+
+
