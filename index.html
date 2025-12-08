@@ -1,95 +1,120 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <link rel="icon" type="image/x-icon" href="imagenes/icono.ico">
   <meta charset="UTF-8">
   <title>Tenis</title>
+  <link rel="icon" type="image/x-icon" href="imagenes/icono.ico">
   <link rel="stylesheet" href="estilos.css">
 </head>
+<footer class="footer-fixed">
+  <p>Todos los derechos reservados, Academia Jose Herrera</p>
+</footer>
+
 <body>
 
-   
+  <!-- MENÚ SUPERIOR -->
+  <header class="menu">
+    <nav>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="fotos.html">Fotos</a></li>
+        <li><a href="torneos.html">Torneos</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
   <section class="info-vet">
-   <img src="imagenes/Logo.png"> 
-   <br><br>
+   
+    <img src="imagenes/Logo.png" alt="Logo Tenis">
 
+    <h1>Inscripción al Torneo de Tenis</h1>
+    <h1>Profe. José Herrera</h1>
 
-    <h1>Inscripcion al torneo de Tenis </h1>
-    <h1>Profe. Jose herrera</h1>
-    <p><strong>Horario:</strong> Sabado 22 de Noviembre</p>
+    <p><strong>Horario:</strong> Sábado 22 de Noviembre</p>
     <p><strong>Horas:</strong> De 15:00 a 22:00</p>
-<div class="whatsapp-section">
-  <div class="whatsapp-line">
-    <img src="imagenes/wsp.png" alt="WhatsApp">
-    <strong>Número de WhatsApp</strong>
-  
-  <div class="whatsapp-number">
-    <a href="https://wa.me/543804123456789" target="_blank">380123456789</a>
- 
-</div>
-</div>
-<h2 style="margin-top:25px;">📍 Apreté el mapa para ver ubicación</h2>
-<br><br>
-<a href="https://maps.app.goo.gl/dnMsS2wLVuYuow4v9?g_st=aw" target="_blank" style="display:inline-block; text-align:center;">
-  <img 
-    src="imagenes/ubicacion.png" 
-    alt="Ubicación en Google Maps" 
-    style="width:100%; max-width:300px; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.2); cursor:pointer;">
-</a>
+
+    <div class="whatsapp-section">
+      <div class="whatsapp-line">
+        <img src="imagenes/wsp.png" alt="WhatsApp">
+        <strong>Número de WhatsApp</strong>
+      </div>
+
+      <div class="whatsapp-number">
+        <a href="https://wa.me/543804123456789" target="_blank">
+          380123456789
+        </a>
+      </div>
+    </div>
+
+    <h2 style="margin-top:25px;">📍 Apretá el mapa para ver ubicación</h2>
+
+    <!-- MAPA CON ENLACE -->
+    <a href="https://www.google.com/maps/place/Lawn+Tennis+Club/@-29.4161906,-66.9009508,15z/data=!4m14!1m7!3m6!1s0x9427db8954ac834d:0x1cd1dcf1909314ac!2sLawn+Tennis+Club!8m2!3d-29.4160691!4d-66.8977321!16s%2Fg%2F11c54rj1r6!3m5!1s0x9427db8954ac834d:0x1cd1dcf1909314ac!8m2!3d-29.4160691!4d-66.8977321!16s%2Fg%2F11c54rj1r6?entry=ttu&g_ep=EgoyMDI1MTIwMS4wIKXMDSoASAFQAw%3D%3D"
+       target="_blank"
+       style="display:inline-block; text-align:center;">
+      <img 
+        src="imagenes/ubicacion.png" 
+        alt="Ubicación en Google Maps"
+        style="width:100%; max-width:300px; border-radius:12px;
+               box-shadow:0 0 10px rgba(0,0,0,0.2); cursor:pointer;">
+    </a>
 
     <a href="#" id="btnNuevoTurno" class="btn-turno">Inscribirse 🎾</a>
-
   </section>
 
-  <!-- 🔵 MODAL NUEVO PARTICIPANTE -->
+  <!-- MODAL NUEVO PARTICIPANTE -->
   <div id="modalTurno" class="modal">
     <div class="editorcaja">
       <h3>Nuevo Participante</h3>
+
       <form id="formTurno" class="scroll-form">
+
         <label>Nombre:</label>
         <input type="text" id="nombre" required>
 
         <label>Apellido:</label>
         <input type="text" id="apellido" required>
-        
-        <label>Categoria:</label>
-<select id="especie" required>
-  <option value="">Seleccionar...</option>
-  <option value="1ra">1ra Categoria</option>
-  <option value="2nda">2nda Categoria</option>
-  <option value="3ra">3ra Categoria</option>
-  <option value="4ta">4ta Categoria</option>
-  <option value="femenino">Femenino</option>
-</select>
 
+        <label>Categoría:</label>
+        <select id="especie" required>
+          <option value="">Seleccionar...</option>
+          <option value="1ra">1ra Categoría</option>
+          <option value="2nda">2nda Categoría</option>
+          <option value="3ra">3ra Categoría</option>
+          <option value="4ta">4ta Categoría</option>
+          <option value="femenino">Femenino</option>
+        </select>
 
-        <label>Dni:</label>
+        <label>DNI:</label>
         <input type="text" id="dni" required>
 
-        <label>Telefono:</label>
+        <label>Teléfono:</label>
         <input type="text" id="telefono" required>
-      
 
-
-        <div class="actions-row" style="margin-top:10px;">
-  <button type="submit" class="btn-primary">Guardar</button>
-  <button type="button" id="btnCancelar" class="btn">Cancelar</button>
-</div>
+        <div class="actions-row">
+          <button type="submit" class="btn-primary">Guardar</button>
+          <button type="button" id="btnCancelar" class="btn">Cancelar</button>
+        </div>
 
       </form>
-      </div></div>
-  <script type="module" src="scriptsjs/firebase.js"></script>
-  <script type="module" src="scriptsjs/modal.js"></script>
-
-<div id="modalConfirmacion" class="modal">
-  <div class="editorcaja" style="text-align:center;">
-    <h3 style="color:#00b612;">✅ Se inscribio correctamente al torneo de Tenis</h3>
-    <div style="margin-top:20px;">
-      <button id="btnOtroTurno" class="btn-primary">Inscribir Otro participante</button>
-      <button id="btnImprimir" class="btn">Cerrar</button>
     </div>
   </div>
-</div>
+
+  <!-- MODAL CONFIRMACIÓN -->
+  <div id="modalConfirmacion" class="modal">
+    <div class="editorcaja" style="text-align:center;">
+      <h3 style="color:#00b612;">✅ Se inscribió correctamente al torneo de Tenis</h3>
+
+      <div style="margin-top:20px;">
+        <button id="btnOtroTurno" class="btn-primary">Inscribir Otro participante</button>
+        <button id="btnImprimir" class="btn">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="scriptsjs/firebase.js"></script>
+  <script type="module" src="scriptsjs/modal.js"></script>
 
 </body>
 </html>
