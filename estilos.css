@@ -13,13 +13,13 @@ html {
 /* === MENÚ SUPERIOR === */
 .menu {
   width: 100%;
-  background: rgba(0, 0, 0, 0.40); /* Transparente para que se vea el fondo */
+  background: rgba(0, 0, 0, 0.40);
   padding: 15px 0;
-  position: fixed;    /* Queda arriba siempre */
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 999;       /* Encima de todo */
-  backdrop-filter: blur(4px); /* efecto vidrio */
+  z-index: 999;
+  backdrop-filter: blur(4px);
 }
 
 .menu ul {
@@ -39,46 +39,44 @@ html {
 }
 
 .menu a:hover {
-  color: #ffd700; /* dorado */
+  color: #ffd700;
   transform: scale(1.1);
 }
 
-/* Para que el contenido no quede tapado por el menú */
+/* === BODY GLOBAL === */
 body {
-  padding-top: 80px; 
-}
-
-/* === FONDO GLOBAL (misma imagen para todas las páginas) === */
-body {
+  padding-top: 80px;  /* Para que el menú no tape el contenido */
   font-family: Arial, sans-serif;
 
-  /* fondo de polvo de ladrillo */
   background: url("imagenes/fondo.png") no-repeat center center fixed;
   background-size: cover;
 
   color: #333;
   min-height: 100vh;
 
-  /* valores neutros por defecto — si una página necesita otra disposición, usar .page-* en body */
-  display: flex;
-  justify-content: center;
-  align-items: center;
   text-align: center;
-  padding: 20px;
-  flex-direction: row; /* por defecto */
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
-/* Si la página necesita el layout columnar (la página de la tabla) */
+/* Solo las páginas que NECESITAN centrado usan esto */
+body.page-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Para la página de tabla */
 body.page-table {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
 }
 
-/* === CONTENEDOR PRINCIPAL (para la página de tenis) === */
+/* === CONTENEDOR PRINCIPAL === */
 .info-vet {
-  background: rgba(255, 255, 255, 0.5); /* más transparente */
+  background: rgba(255, 255, 255, 0.5);
   width: 100%;
   max-width: 600px;
   padding: 40px 30px;
@@ -91,7 +89,6 @@ body.page-table {
   gap: 10px;
 }
 
-/* Elementos internos */
 .info-vet img {
   width: 100%;
   max-width: 400px;
@@ -110,7 +107,7 @@ body.page-table {
   margin-bottom: 6px;
 }
 
-/* WhatsApp */
+/* === WHATSAPP === */
 .whatsapp-section {
   margin-top: 10px;
 }
@@ -136,7 +133,7 @@ body.page-table {
   text-decoration: underline;
 }
 
-/* Botón */
+/* === BOTÓN === */
 .btn-turno {
   background: #005eff;
   color: white;
@@ -153,7 +150,7 @@ body.page-table {
   background: #0041b3;
 }
 
-/* === MODAL (reutilizable) === */
+/* === MODAL === */
 .modal {
   position: fixed;
   top: 0;
@@ -217,7 +214,7 @@ body.page-table {
   background: #b1b1b1;
 }
 
-/* === ESTILOS ESPECÍFICOS para la página de tabla (antes con gradient) === */
+/* === TABLA === */
 #header {
   width: 100%;
   text-align: center;
@@ -225,16 +222,13 @@ body.page-table {
   color: white;
 }
 
-/* Si existe imagen en el header */
 #header img {
   width: 100%;
   max-width: 400px;
-  height: auto;
   margin-bottom: 15px;
   filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3));
 }
 
-/* Contenedor tabla */
 .contenedor-tabla {
   background: white;
   width: 100%;
@@ -246,7 +240,6 @@ body.page-table {
   overflow-x: auto;
 }
 
-/* Tabla de turnos */
 .tabla-turnos {
   width: 100%;
   border-collapse: collapse;
@@ -264,60 +257,14 @@ body.page-table {
 .tabla-turnos th {
   background: linear-gradient(135deg, #007BFF, #0056d6);
   color: white;
-  font-size: clamp(1.2rem, 4vw, 1.5rem);
 }
 .tabla-turnos th:nth-child(2) {
   background: #4fe156;
-  color: white;
 }
 .tabla-turnos th:nth-child(3) {
   background: #2237f1;
-  color: white;
 }
 
-/* === RESPONSIVE (celulares/tabltes) === */
-@media (max-width: 1000px) {
-  html { font-size: 22px; }
-  body { padding: 10px; }
-
-  #header img {
-    max-width: 450px;
-    transform: scale(1.1);
-  }
-
-  .contenedor-tabla {
-    width: 100%;
-    max-width: 100%;
-    border-radius: 24px;
-    padding: 35px 20px;
-  }
-
-  .tabla-turnos th,
-  .tabla-turnos td {
-    font-size: 1.4rem;
-    padding: 16px;
-  }
-}
-
-/* === ANIMACIONES === */
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.96); }
-  to { opacity: 1; transform: scale(1); }
-}
-.footer-fixed {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 15px 0;
-  background: rgba(0, 0, 0, 0.7);
-  color: #fff;
-  text-align: center;
-  font-size: 14px;
-  backdrop-filter: blur(4px);
-  letter-spacing: 0.6px;
-  z-index: 1000;
-}
 /* === CARRUSEL === */
 .carrusel {
   position: relative;
@@ -342,7 +289,6 @@ body.page-table {
   border-radius: 20px;
 }
 
-/* Botones */
 .btn-carrusel {
   position: absolute;
   top: 50%;
@@ -362,10 +308,45 @@ body.page-table {
   background: rgba(0,0,0,0.7);
 }
 
-.prev {
-  left: 10px;
+.prev { left: 10px; }
+.next { right: 10px; }
+
+/* === FOOTER === */
+.footer-fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 0;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  backdrop-filter: blur(4px);
+  letter-spacing: 0.6px;
+  z-index: 1000;
 }
 
-.next {
-  right: 10px;
+/* === RESPONSIVE === */
+@media (max-width: 1000px) {
+  html { font-size: 20px; }
+
+  .contenedor-tabla {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 24px;
+    padding: 35px 20px;
+  }
+
+  .tabla-turnos th,
+  .tabla-turnos td {
+    font-size: 1.4rem;
+    padding: 16px;
+  }
+}
+
+/* === ANIMACIÓN === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
 }
