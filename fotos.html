@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Fotos - Tenis</title>
+  <link rel="icon" type="image/x-icon" href="imagenes/icono.ico">
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<footer class="footer-fixed">
+  <p>Todos los derechos reservados, Academia Jose Herrera</p>
+</footer>
+
+
+<body class="page-table">
+
+  <!-- MENÚ SUPERIOR -->
+  <header class="menu">
+    <nav>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="fotos.html">Fotos</a></li>
+        <li><a href="torneos.html">Torneos</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- HEADER DE LA SECCIÓN -->
+  <div id="header">
+    <h1>Galeria de Fotos ??</h1>
+  </div>
+
+  <!-- CONTENEDOR DE FOTOS -->
+  <!-- CARRUSEL -->
+<div class="carrusel">
+  <div class="carrusel-imagenes">
+    <img src="imagenes/imagen1.png" alt="">
+    <img src="imagenes/imagen2.png" alt="">
+    <img src="imagenes/imagen3.jpeg" alt="">
+    <img src="imagenes/imagen4.png" alt="">
+  </div>
+
+  <!-- Botones -->
+  <button class="btn-carrusel prev">&#10094;</button>
+  <button class="btn-carrusel next">&#10095;</button>
+</div>
+<script>
+  const carrusel = document.querySelector(".carrusel-imagenes");
+  const imgs = document.querySelectorAll(".carrusel-imagenes img");
+
+  let index = 0;
+
+  function mostrarImagen(n) {
+    index = (n + imgs.length) % imgs.length;
+    carrusel.style.transform = `translateX(${-index * 100}%)`;
+  }
+
+  document.querySelector(".prev").onclick = () => mostrarImagen(index - 1);
+  document.querySelector(".next").onclick = () => mostrarImagen(index + 1);
+</script>
+
+
+</body>
+</html>
