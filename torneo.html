@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Torneo</title>
+<link rel="stylesheet" href="estilos.css">
+<style>
+    body { font-family: Arial; padding: 20px; max-width: 800px; margin: auto; }
+    .grupo { margin-top: 30px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #ccc; padding: 6px; text-align: center; }
+    th { background: #eee; }
+    .ganador { color: green; font-weight: bold; }
+    .btn { padding: 8px 12px; cursor: pointer; border: none; border-radius: 6px; }
+    .verde { background: #14542F; color: white; }
+    .amarillo { background: #B8860B; color: white; }
+    .gris { background: #444; color: white; }
+    
+</style>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDBQLMd7MWVI2IPz96oMt2YbK30oXuu0mA",
+  authDomain: "tenis-9ae6b.firebaseapp.com",
+  projectId: "tenis-9ae6b",
+  storageBucket: "tenis-9ae6b.firebasestorage.app",
+  messagingSenderId: "103861083118",
+  appId: "1:103861083118:web:1a7657358306bcaeeb4cff"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const url = new URLSearchParams(location.search);
+const T = url.get("t"); // nombre del torneo
+let DATA = null;
+</script>
+</head>
+
+<body>
+    
+
+
+ <header class="menu">
+    <nav>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="fotos.html">Fotos</a></li>
+        <li><a href="torneosdisponibles.html">Torneos</a></li>
+      </ul>
+    </nav>
+  </header>
+<section class="info-vet">
+    <h2 id="titulo">Torneo</h2>
+
+<div id="contenido"></div>
+
+<button class="gris" onclick="history.back()">Volver</button>
+
+<!-- Modal -->
+<div id="modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; 
+background:#0008; align-items:center; justify-content:center;">
+    <div style="background:white; padding:20px; border-radius:8px; min-width:300px;">
+        <h3 id="modalTitle"></h3>
+        <div id="modalCampos"></div>
+        <button class="verde" onclick="guardarResultado()">Guardar</button>
+        <button class="gris" onclick="cerrarModal()">Cancelar</button>
+    </div>
+</div>
+</section>
+<script>
+
+document.getElementById("titulo").textContent = T;
+
+function cargarTorneo() {
+    firebase.database().ref("Torneos/" + T).on("value", s => {
+        if (!s.exists()) {
+            document.getElementById("contenido").innerHTML = "<p>El torneo fue eliminado</p>";
+            return;
+        }
+        DATA = s.val();
+        render();
+    });
+}
+
+function render() {
+    const cont = document.getElementById("contenido");
+    cont.innerHTML = "";
+
+    if (!DATA.grupos) {
+        cont.innerHTML = "<p>Error: falta estructura de grupos.</p>";
+        return;
+    }
+
+    // --- MOSTRAR GRUPOS ---
+    Object.keys(DATA.grupos).forEach(grupo => {
+        const players = DATA.grupos[grupo];
+        let html = `<div class='grupo'><h3>${grupo}</h3>`;
+        html += `
+            <table>
+                <tr>
+                    <th>Jugador</th><th>V</th><th>D</th><th>GG</th><th>GP</th>
+                </tr>
+        `;
+
+        const stats = calcularStatsGrupo(players);
+
+        stats.forEach(p => {
+            html += `
+                <tr>
+                    <td>${p.nombre}</td>
+                    <td>${p.v}</td>
+                    <td>${p.d}</td>
+                    <td>${p.gf}</td>
+                    <td>${p.gc}</td>
+                </tr>
+            `;
+        });
+
+        html += "</table></div>";
+        cont.innerHTML += html;
+    });
+
+    // --- BOTONES ---
+    cont.innerHTML += `
+        <button class="amarillo btn" onclick="verEmparejamientos()">Ver Emparejamientos</button>
+        <button class="verde btn" onclick="generarBracket()">Generar/Ver Bracket</button>
+    `;
+}
+
+/* -----------------------------
+       CALCULO DE ESTADÍSTICAS
+------------------------------*/
+function calcularStatsGrupo(players) {
+    const arr = Object.entries(players).map(([id, p]) => ({
+        id,
+        nombre: p.nombre + " " + p.apellido,
+        v: 0, d: 0, gf: 0, gc: 0
+    }));
+
+    const matches = DATA.emparejamientos || {};
+
+    arr.forEach(ps => {
+        Object.values(matches).forEach(m => {
+            if (m.player1Id === ps.id || m.player2Id === ps.id) {
+
+                const s1 = [m.score1_1, m.score1_2, m.score1_3];
+                const s2 = [m.score2_1, m.score2_2, m.score2_3];
+                const sets1 = s1.filter((x,i) => x > s2[i]).length;
+                const sets2 = s2.filter((x,i) => x > s1[i]).length;
+
+                if (m.player1Id === ps.id) {
+                    ps.gf += s1.reduce((a,b)=>a+b,0);
+                    ps.gc += s2.reduce((a,b)=>a+b,0);
+                    if (sets1 >= 2) ps.v++; else if (sets2 >= 2) ps.d++;
+                } else {
+                    ps.gf += s2.reduce((a,b)=>a+b,0);
+                    ps.gc += s1.reduce((a,b)=>a+b,0);
+                    if (sets2 >= 2) ps.v++; else if (sets1 >= 2) ps.d++;
+                }
+            }
+        });
+    });
+
+    return arr.sort((a,b)=>
+        b.v - a.v ||
+        (b.gf-b.gc) - (a.gf-a.gc) ||
+        b.gf - a.gf
+    );
+}
+
+/* -----------------------------
+      EMPAREJAMIENTOS (PANTALLA)
+------------------------------*/
+
+function verEmparejamientos() {
+    const cont = document.getElementById("contenido");
+    const matches = DATA.emparejamientos || {};
+
+    let html = "<h3>Emparejamientos</h3>";
+
+    Object.entries(matches).forEach(([id,m]) => {
+        const p1 = DATA.grupos[m.groupName][m.player1Id];
+        const p2 = DATA.grupos[m.groupName][m.player2Id];
+
+        let score = `${m.score1_1}-${m.score2_1}`;
+        if (m.score1_2>0 || m.score2_2>0) score += ` / ${m.score1_2}-${m.score2_2}`;
+        if (m.score1_3>0 || m.score2_3>0) score += ` / ${m.score1_3}-${m.score2_3}`;
+
+        html += `
+            <div onclick="editarMatch('${id}')"
+                 style="padding:8px;border:1px solid #ccc;margin-bottom:6px;cursor:pointer;">
+                <b>${m.groupName}</b><br>
+                ${p1.nombre} ${p1.apellido} <b>vs</b> ${p2.nombre} ${p2.apellido}<br>
+                <b>${score}</b>
+            </div>
+        `;
+    });
+
+    html += `<button class="gris btn" onclick="render()">Volver a grupos</button>`;
+    cont.innerHTML = html;
+}
+
+/* -----------------------------
+         MODAL EDITAR RESULTADO
+------------------------------*/
+
+let MATCH_EDIT = null;
+
+function editarMatch(id) {
+    MATCH_EDIT = id;
+    const m = DATA.emparejamientos[id];
+    const p1 = DATA.grupos[m.groupName][m.player1Id];
+    const p2 = DATA.grupos[m.groupName][m.player2Id];
+
+    document.getElementById("modalTitle").innerHTML =
+        `${p1.nombre} ${p1.apellido} vs ${p2.nombre} ${p2.apellido}`;
+
+    document.getElementById("modalCampos").innerHTML = `
+        Set 1: <input id="s11" value="${m.score1_1}"> - <input id="s21" value="${m.score2_1}"><br><br>
+        Set 2: <input id="s12" value="${m.score1_2}"> - <input id="s22" value="${m.score2_2}"><br><br>
+        Set 3: <input id="s13" value="${m.score1_3}"> - <input id="s23" value="${m.score2_3}">
+    `;
+
+    document.getElementById("modal").style.display = "flex";
+}
+
+function cerrarModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+function guardarResultado() {
+    const m = DATA.emparejamientos[MATCH_EDIT];
+    const up = {
+        score1_1: +document.getElementById("s11").value,
+        score1_2: +document.getElementById("s12").value,
+        score1_3: +document.getElementById("s13").value,
+        score2_1: +document.getElementById("s21").value,
+        score2_2: +document.getElementById("s22").value,
+        score2_3: +document.getElementById("s23").value,
+    };
+
+    firebase.database().ref("Torneos/"+T+"/emparejamientos/"+MATCH_EDIT)
+        .update(up).then(()=>{
+            cerrarModal();
+        });
+}
+
+/* -----------------------------
+         BRACKET
+------------------------------*/
+function generarBracket() {
+    if (!T) {
+        alert("Error: no se encontró el torneo.");
+        return;
+    }
+
+    // Redirige a la pantalla del bracket final
+    window.location.href = "torneofinal.html?t=" + encodeURIComponent(T);
+}
+
+
+cargarTorneo();
+
+</script>
+
+</body>
+</html>
