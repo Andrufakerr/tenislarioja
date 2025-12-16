@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Bracket</title>
+
+
+<style>
+  .menu {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.40);
+  padding: 15px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  backdrop-filter: blur(4px);
+}
+
+.menu ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  gap: 40px;
+}
+
+.menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: 0.3s;
+}
+
+.menu a:hover {
+  color: #ffd700;
+  transform: scale(1.1);
+}
+/* Reset básico */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #636262;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden; /* El body no scrollea, lo hace el contenedor */
+}
+
+/* --- CONTENEDOR DE SCROLL --- 
+   Este div envuelve todo y permite mover el bracket con el dedo */
+.scroll-container {
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Scroll automático */
+  display: flex;
+  align-items: center; /* Centrar verticalmente */
+  
+  /* Smooth scroll para iOS */
+  -webkit-overflow-scrolling: touch; 
+}
+
+/* --- WRAPPER DEL BRACKET --- */
+#bracket-wrapper {
+  position: relative;
+  width: max-content; /* El ancho se adapta al contenido */
+  padding: 40px;      /* Espacio alrededor para que no se pegue a los bordes */
+  margin: auto;       /* Centrado si sobra espacio */
+  
+  /* Desktop por defecto: Mantenemos tu escala del 125% */
+  transform: scale(1.25);
+  transform-origin: center left;
+}
+
+/* SVG de las Líneas */
+#lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.line {
+  stroke: #ddd;
+  stroke-width: 2;
+  fill: none;
+}
+
+/* --- ESTRUCTURA DEL BRACKET --- */
+.bracket {
+  display: flex;
+  flex-direction: row; /* Siempre en fila */
+  gap: 60px; /* Separación entre columnas */
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 240px; /* Ancho fijo de las columnas */
+  position: relative;
+  z-index: 2;
+}
+
+/* Ajustes específicos de columnas */
+#qf { min-height: 400px; } /* Altura base para distribuir */
+#sf { }
+#final { justify-content: center; }
+
+/* --- CAJAS (MATCHES) --- */
+.match {
+  background: white;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  overflow: hidden;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.player {
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f0f0f0;
+  height: 36px;
+}
+.player:last-child { border-bottom: none; }
+
+.winner {
+  background: #E8F5E9;
+  color: #1B5E20;
+  font-weight: 700;
+}
+
+/* -------------------------------------------------- */
+/* MEDIA QUERIES (RESPONSIVE)            */
+/* -------------------------------------------------- */
+
+@media (max-width: 768px) {
+  /* En celular, quitamos el zoom exagerado */
+  #bracket-wrapper {
+    transform: none; /* Escala real 1:1 */
+    padding: 20px;   /* Menos padding */
+    margin: 0;       /* Alineado a la izquierda para empezar a scrollear */
+  }
+
+  .bracket {
+    gap: 30px; /* Reducimos espacio entre columnas para que quepa más info */
+  }
+  
+  .column {
+    width: 200px; /* Cajas un poco más angostas en móvil */
+  }
+  
+  .match {
+    font-size: 12px; /* Letra un poco más pequeña */
+  }
+
+  /* Ajustamos el contenedor para que el scroll empiece bien */
+  .scroll-container {
+    display: block; /* En móvil block funciona mejor para el scroll horizontal */
+  }
+}
+</style>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDBQLMd7MWVI2IPz96oMt2YbK30oXuu0mA",
+  authDomain: "tenis-9ae6b.firebaseapp.com",
+  databaseURL: "https://tenis-9ae6b-default-rtdb.firebaseio.com",
+  projectId: "tenis-9ae6b",
+  storageBucket: "tenis-9ae6b.appspot.com",
+  messagingSenderId: "103861083118",
+  appId: "1:103861083118:web:1a7657358306bcaeeb4cff"
+};
+
+firebase.initializeApp(firebaseConfig);
+</script>
+</head>
+
+<body>
+<header class="menu">
+    <nav>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="fotos.html">Fotos</a></li>
+        <li><a href="torneosdisponibles.html">Torneos</a></li>
+      </ul>
+    </nav>
+  </header>
+<div class="scroll-container">
+  <div id="bracket-wrapper">
+    <svg id="lines"></svg>
+
+    <div class="bracket">
+      <div class="column" id="qf"></div>
+      <div class="column" id="sf"></div>
+      <div class="column" id="final"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const qf = document.getElementById("qf");
+const sf = document.getElementById("sf");
+const finalCol = document.getElementById("final");
+
+const params = new URLSearchParams(location.search);
+const TORNEO = params.get("t");
+
+if (!TORNEO) console.warn("Falta parámetro ?t=NOMBRE");
+
+// ---------------- LECTURA ----------------
+firebase.database()
+  .ref("Torneos/" + (TORNEO || "demo") + "/bracket")
+  .on("value", snap => {
+    if (!snap.exists()) return;
+    render(snap.val());
+  });
+
+// ---------------- UTILIDADES ----------------
+function setsWon(a,b){
+  let x=0,y=0;
+  for(let i=0;i<3;i++){
+    if(a[i]>b[i]) x++;
+    if(b[i]>a[i]) y++;
+  }
+  return {x,y};
+}
+
+function box(m, id){
+  if(!m) return "";
+
+  const s1 = [
+    m.score1_1 ?? null,
+    m.score1_2 ?? null,
+    m.score1_3 ?? null
+  ];
+
+  const s2 = [
+    m.score2_1 ?? null,
+    m.score2_2 ?? null,
+    m.score2_3 ?? null
+  ];
+
+  const r = setsWon(
+    s1.map(x => x ?? 0),
+    s2.map(x => x ?? 0)
+  );
+
+  // Detectamos ganador y perdedor
+  const p1Winner = r.x > r.y;
+  const p2Winner = r.y > r.x;
+
+  function formatScores(mySets, otherSets, isLoser){
+    return mySets.map((v, i) => {
+      if (v !== null && v > 0) return v;      // set jugado
+      if (isLoser && otherSets[i] > 0) return 0; // set perdido → mostrar 0
+      return null;
+    }).filter(v => v !== null).join(" / ");
+  }
+
+  const txt1 = formatScores(s1, s2, p2Winner);
+  const txt2 = formatScores(s2, s1, p1Winner);
+
+  return `
+  <div class="match" data-id="${id}">
+    <div class="player ${p1Winner ? 'winner' : ''}">
+      <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:120px;">
+        ${m.player1Name || "TBD"}
+      </span>
+      <span>${txt1 || "-"}</span>
+    </div>
+    <div class="player ${p2Winner ? 'winner' : ''}">
+      <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:120px;">
+        ${m.player2Name || "TBD"}
+      </span>
+      <span>${txt2 || "-"}</span>
+    </div>
+  </div>`;
+}
+
+
+// ---------------- RENDER ----------------
+function render(bracket){
+  qf.innerHTML = "";
+  sf.innerHTML = "";
+  finalCol.innerHTML = "";
+
+  // Cuartos
+  Object.entries(bracket.quarterfinals||{}).forEach(([id,m])=> qf.innerHTML += box(m,id));
+  
+  // Semis (rellenamos si faltan para mantener estructura visual)
+  const semis = bracket.semifinals || {};
+  // Aseguramos orden o existencia
+  sf.innerHTML += box(semis.S1 || semis[Object.keys(semis)[0]], "S1");
+  sf.innerHTML += box(semis.S2 || semis[Object.keys(semis)[1]], "S2");
+
+  // Final
+  if(bracket.final?.F) finalCol.innerHTML = box(bracket.final.F,"F");
+
+  // Pequeño delay para asegurar que el DOM pintó las alturas
+  setTimeout(drawLines, 150);
+}
+
+// ---------------- LÍNEAS ----------------
+function drawLines(){
+  const svg = document.getElementById("lines");
+  svg.innerHTML = "";
+  const wrapper = document.getElementById("bracket-wrapper");
+  
+  // Detectar offset relativo al wrapper para ignorar el scroll del padre
+  function getPoint(el, type) {
+    if(!el) return {x:0, y:0};
+    
+    // Obtenemos posición relativa al wrapper
+    const elRect = el.getBoundingClientRect();
+    const wrapRect = wrapper.getBoundingClientRect();
+    
+    // Calculamos la posición interna considerando el scale si existe
+    // Nota: Como getBoundingClientRect ya aplica el scale, la resta funciona bien visualmente
+    // pero debemos normalizar por el factor de escala actual si queremos coordenadas SVG internas puras.
+    // Sin embargo, SVG dentro del div escalado se comporta bien con coordenadas relativas directas.
+    
+    const scale = wrapper.getBoundingClientRect().width / wrapper.offsetWidth; 
+    
+    // Coordenadas relativas "sin zoom" para el SVG interno
+    const relativeLeft = (elRect.left - wrapRect.left) / scale;
+    const relativeTop = (elRect.top - wrapRect.top) / scale;
+    const width = elRect.width / scale;
+    const height = elRect.height / scale;
+
+    return {
+      x: type === 'out' ? relativeLeft + width : relativeLeft,
+      y: relativeTop + height / 2
+    };
+  }
+
+  function connect(a, b){
+    if(!a || !b) return;
+    const p1 = getPoint(a, 'out');
+    const p2 = getPoint(b, 'in');
+    const mid = (p1.x + p2.x) / 2;
+
+    svg.innerHTML += `<path class="line" d="M ${p1.x} ${p1.y} H ${mid} V ${p2.y} H ${p2.x}" />`;
+  }
+
+  const qfNodes = qf.querySelectorAll(".match");
+  const sfNodes = sf.querySelectorAll(".match");
+  const fNode = finalCol.querySelector(".match");
+
+  if(qfNodes.length >= 2 && sfNodes.length >= 1) {
+    connect(qfNodes[0], sfNodes[0]);
+    connect(qfNodes[1], sfNodes[0]);
+  }
+  if(qfNodes.length >= 4 && sfNodes.length >= 2) {
+    connect(qfNodes[2], sfNodes[1]);
+    connect(qfNodes[3], sfNodes[1]);
+  }
+  
+  if(sfNodes.length >= 1 && fNode) connect(sfNodes[0], fNode);
+  if(sfNodes.length >= 2 && fNode) connect(sfNodes[1], fNode);
+}
+
+window.addEventListener('resize', () => {
+  setTimeout(drawLines, 100);
+});
+</script>
+
+</body>
+</html>
