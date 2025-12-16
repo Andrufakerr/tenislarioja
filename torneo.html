@@ -127,7 +127,7 @@ function render() {
     // --- BOTONES ---
     cont.innerHTML += `
         <button class="amarillo btn" onclick="verEmparejamientos()">Ver Emparejamientos</button>
-        <button class="verde btn" onclick="generarBracket()">Generar/Ver Bracket</button>
+        <button class="verde btn" onclick="verificarBracket()">Ver Bracket</button>
     `;
 }
 
@@ -252,16 +252,29 @@ function guardarResultado() {
 /* -----------------------------
          BRACKET
 ------------------------------*/
-function generarBracket() {
+function verificarBracket() {
     if (!T) {
         alert("Error: no se encontró el torneo.");
         return;
     }
 
-    // Redirige a la pantalla del bracket final
-    window.location.href = "torneofinal.html?t=" + encodeURIComponent(T);
-}
+    const ref = firebase.database().ref("Torneos/" + T + "/bracket");
 
+    ref.once("value")
+        .then(snapshot => {
+            if (snapshot.exists()) {
+                // ✅ El bracket existe → funciona como antes
+                window.location.href = "torneofinal.html?t=" + encodeURIComponent(T);
+            } else {
+                // ❌ No existe el bracket
+                alert("Todavía el Organizador no generó el Bracket Final");
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Error al verificar el bracket");
+        });
+}
 
 cargarTorneo();
 
@@ -269,3 +282,4 @@ cargarTorneo();
 
 </body>
 </html>
+
