@@ -5,135 +5,106 @@
   <title>Tenis</title>
   <link rel="icon" type="image/x-icon" href="imagenes/icono.ico">
   <link rel="stylesheet" href="estilos.css">
-<meta property="og:title" content="Torneo de Tenis - Inscripción Abierta">
-<meta property="og:description" content="Inscribite al torneo de tenis del Profesor José Herrera. De 15 a 22 hs.">
-<meta property="og:image" content="https://andrufakerr.github.io/tenislarioja/imagenes/logo.png">
-<meta property="og:url" content="https://andrufakerr.github.io/tenislarioja/">
-<meta property="og:type" content="website">
 
-<!-- === META TWITTER (WhatsApp también las puede usar) === -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Tenis Riojano">
-<meta name="twitter:description" content="Inscribite al torneo de tenis del Profesor José Herrera. De 15 a 22 hs.">
-<meta name="twitter:image" content="https://andrufakerr.github.io/tenislarioja/imagenes/logo.png">
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 </head>
 
-<body class="page-center">
+<body>
 
-  <!-- MENÚ SUPERIOR -->
- <header class="menu">
-    <nav>
-      <ul>
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="fotos.html">Fotos</a></li>
-        <li><a href="torneosdisponibles.html">Torneos</a></li>
-      </ul>
-    </nav>
-  </header>
+<header class="menu">
+  <nav>
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="fotos.html">Fotos</a></li>
+      <li><a href="torneosdisponibles.html">Torneos</a></li>
+    </ul>
+  </nav>
+</header>
 
+<section class="info-vet">
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <section class="info-vet">
-   
-    <img src="imagenes/Logo.png" alt="Logo Tenis">
+  <img src="imagenes/Logo.png" alt="Logo Tenis">
 
-    <h1>Inscripción al Torneo de Tenis</h1>
-    <h1>Profe. José Herrera</h1>
+  <h1 id="titulo1"></h1>
+  <h1 id="titulo2"></h1>
 
-    <p><strong>Horario:</strong> Sábado 22 de Noviembre</p>
-    <p><strong>Horas:</strong> De 15:00 a 22:00</p>
+  <p><strong id="descripcion1"></strong></p>
+  <p><strong id="descripcion2"></strong></p>
 
-    <div class="whatsapp-section">
-      <div class="whatsapp-line">
-        <img src="imagenes/wsp.png" alt="WhatsApp">
-        <strong>Número de WhatsApp</strong>
-      </div>
-
-      <div class="whatsapp-number">
-        <a href="https://wa.me/543804123456789" target="_blank">
-          380123456789
-        </a>
-      </div>
+  <div class="whatsapp-section">
+    <div class="whatsapp-line">
+      <img src="imagenes/wsp.png" alt="WhatsApp">
+      <strong>Número de WhatsApp:</strong>
     </div>
 
-    <h2 style="margin-top:25px;">📍 Apretá el mapa para ver ubicación</h2><br>
-
-    <!-- MAPA CON ENLACE -->
-    <a href="https://maps.app.goo.gl/8EAYQ5wpT48JdFaW8?g_st=aw"
-       target="_blank"
-       style="display:inline-block; text-align:center;">
-      <img 
-        src="imagenes/ubicacion.png" 
-        alt="Ubicación en Google Maps"
-        style="width:100%; max-width:300px; border-radius:12px;
-               box-shadow:0 0 10px rgba(0,0,0,0.2); cursor:pointer;">
-    </a>
-
-    <a href="#" id="btnNuevoTurno" class="btn-turno">Inscribirse 🎾</a>
-  </section>
-
-  <!-- MODAL NUEVO PARTICIPANTE -->
-  <div id="modalTurno" class="modal">
-    <div class="editorcaja">
-      <h3>Nuevo Participante</h3>
-
-      <form id="formTurno" class="scroll-form">
-
-        <label>Nombre:</label>
-        <input type="text" id="nombre" required>
-
-        <label>Apellido:</label>
-        <input type="text" id="apellido" required>
-
-        <label>Categoría:</label>
-        <select id="especie" required>
-          <option value="">Seleccionar...</option>
-          <option value="1ra">1ra Categoría</option>
-          <option value="2nda">2nda Categoría</option>
-          <option value="3ra">3ra Categoría</option>
-        </select>
-
-        <label>DNI:</label>
-        <input type="text" id="dni" required>
-
-        <label>Teléfono:</label>
-        <input type="text" id="telefono" required>
-
-        <div class="actions-row">
-          <button type="submit" class="btn-primary">Guardar</button>
-          <button type="button" id="btnCancelar" class="btn">Cancelar</button>
-        </div>
-
-      </form>
+    <div class="whatsapp-number">
+      <a id="numeroWsp" target="_blank"></a>
     </div>
   </div>
 
-  <!-- MODAL CONFIRMACIÓN -->
-  <div id="modalConfirmacion" class="modal">
-    <div class="editorcaja" style="text-align:center;">
-      <h3 style="color:#00b612;">✅ Se inscribió correctamente al torneo de Tenis</h3>
+  <h2 style="margin-top:25px;">📍 Apretá el mapa para ver ubicación</h2>
 
-      <div style="margin-top:20px;">
-        <button id="btnOtroTurno" class="btn-primary">Inscribir Otro participante</button>
-        <button id="btnImprimir" class="btn">Cerrar</button>
-      </div>
-    </div>
-  </div>
+  <!-- MAPA -->
+  <a id="linkMapa"
+     target="_blank"
+     style="display:inline-block; text-align:center;">
+    <img 
+      src="imagenes/ubicacion.png" 
+      alt="Ubicación en Google Maps"
+      style="width:100%; max-width:300px; border-radius:12px;
+             box-shadow:0 0 10px rgba(0,0,0,0.2); cursor:pointer;">
+  </a>
 
-  <!-- FOOTER (AHORA SÍ ESTÁ BIEN UBICADO) -->
-  <footer class="footer-fixed">
-    <p>Todos los derechos reservados, Academia Jose Herrera</p>
-  </footer>
+  <a href="inscripcion.html" class="btn-turno">Inscribirse 🎾</a>
+</section>
 
-  <script type="module" src="scriptsjs/firebase.js"></script>
-  <script type="module" src="scriptsjs/modal.js"></script>
+<footer class="footer-fixed">
+  <p>Todos los derechos reservados, Academia Jose Herrera</p>
+</footer>
+
+<!-- SCRIPT -->
+<script>
+  // 🔥 CONFIGURACIÓN FIREBASE
+  const firebaseConfig = {
+  apiKey: "AIzaSyBS_ssFQaK2DhlLjiZANK2B2sJFztxnG50",
+  authDomain: "paginadescripcion.firebaseapp.com",
+  databaseURL: "https://paginadescripcion-default-rtdb.firebaseio.com",
+  projectId: "paginadescripcion",
+  storageBucket: "paginadescripcion.firebasestorage.app",
+  messagingSenderId: "974200079044",
+  appId: "1:974200079044:web:a814bddeabb123eed1ff91"
+};
+
+
+  firebase.initializeApp(firebaseConfig);
+
+  const db = firebase.database();
+
+  db.ref("infoTorneo").on("value", snapshot => {
+    if (!snapshot.exists()) return;
+
+    const data = snapshot.val();
+
+    document.getElementById("titulo1").textContent = data.titulo1 || "";
+    document.getElementById("titulo2").textContent = data.titulo2 || "";
+
+    document.getElementById("descripcion1").textContent = data.descripcion1 || "";
+    document.getElementById("descripcion2").textContent = data.descripcion2 || "";
+
+    // WhatsApp
+    const wsp = document.getElementById("numeroWsp");
+    wsp.textContent = data.numeroWsp || "";
+    wsp.href = "https://wa.me/" + data.numeroWsp;
+
+    // Mapa (solo cambia el link)
+    document.getElementById("linkMapa").href = data.ubicacionMapa || "#";
+  });
+</script>
 
 </body>
 </html>
-
-
-
-
 
 
 
